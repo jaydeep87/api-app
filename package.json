@@ -1,0 +1,72 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Online Education",
+  "main": "app.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint .",
+    "clean": "rm -rf node_modules dist",
+    "test": "nyc mocha --timeout 10000 test/router-test.js --exit",
+    "test:ci": "cross-env MOCHA_FILE=./dist/test-results.xml --check-coverage mocha --timeout 10000 'test/router-test.js' --reporter=mocha-junit-reporter",
+    "coverage:ci": "nyc report --reporter=cobertura --reporter=html"
+  },
+  "author": "jdt",
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/eslint-config-node": "^0.3.0",
+    "app-root-path": "^3.0.0",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.7",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
+    "supertest": "^3.4.2",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.15.0",
+    "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "nyc": "^13.3.0"
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.test.js",
+      "config",
+      "services/sql-constants"
+    ],
+    "report-dir": "dist/coverage",
+    "watermarks": {
+      "lines": [
+        80,
+        95
+      ],
+      "functions": [
+        80,
+        95
+      ],
+      "branches": [
+        80,
+        95
+      ],
+      "statements": [
+        80,
+        95
+      ]
+    }
+  }
+}

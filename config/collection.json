@@ -1,0 +1,8 @@
+{
+    "user": {
+        "name": "users"
+    },
+    "course":{
+        "name": "courses"
+    }
+}
