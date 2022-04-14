@@ -20,13 +20,14 @@ module.exports = {
       if (!req.body.mobile || !req.body.password) {
         res.json({ success: false, msg: 'Please pass mobile and password.' });
       } else {
+        console.log(JSON.stringify(req.body));
         const userObj = {
           mobile: req.body.mobile,
           password: req.body.password,
-          fName: req.body.fName,
+          name: req.body.name,
         };
         // save the user
-        mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ statusCode: 200, data, statusMessage: 'Successful created new user.' }))
+        mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ sc: 200, data, msgTitle:'Registration', sm: 'Registration was success!' }))
           .catch((err) => {
             next(err);
           });

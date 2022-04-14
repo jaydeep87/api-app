@@ -63,8 +63,9 @@ function appInit() {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
     res.json({
-      statusCode: err.status || 500,
-      statusMessage: err.message,
+      sc: err.status || 500,
+      sm: err.message,
+      msgTitle: 'Error!'
     });
     // render the error page
   });
