@@ -25,6 +25,25 @@ if (!fs.existsSync('logs')) {
   fs.mkdirSync('logs'); // Create the directory if it does not exist
 }
 
+const errorHandler = (err, req, res, next) => {
+  logger.error('error', err);
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.json({
+    sc: err.status || 500,
+    sm: err.message,
+    msgTitle: 'Error!'
+  })
+}
+
+const notFound404 = (req, res, next) => {
+  const err = new Error(`'${req.protocol}://${req.headers.host + req.url}' Not Found`);
+  err.status = 404;
+  next(err);
+}
+
 function appInit() {
   const app = express();
   app.use(cors());
@@ -49,26 +68,12 @@ function appInit() {
   app.use('/', apiRoutes);
 
   // catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
+  app.use((req, res, next) => notFound404(req, res, next),
+    (err, req, res, next) => errorHandler(err, req, res, next));
 
   // error handler
-  app.use((err, req, res) => {
-    logger.error('error', err);
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    res.status(err.status || 500);
-    res.json({
-      sc: err.status || 500,
-      sm: err.message,
-      msgTitle: 'Error!'
-    });
-    // render the error page
-  });
+  app.use((err, req, res, next) => errorHandler(err, req, res, next));
+  // render the error page
   return app;
 }
 module.exports.appInit = appInit;

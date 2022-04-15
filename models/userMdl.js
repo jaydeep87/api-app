@@ -15,7 +15,7 @@ const UserSchema = new Schema({
   pin: { type: String, trim: true, default: '' },
   profileImage: { type: String, trim: true, default: '' },
   country: { type: String, default: 'India' },
-  email: { type: String },
+  email: { type: String, default: '' },
   mobile: { type: String, required: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },

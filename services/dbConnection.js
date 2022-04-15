@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 module.exports = function (dbURL, done) {
-    mongoose.connect(dbURL, { useNewUrlParser: true, bufferMaxEntries: 0, useUnifiedTopology: true });
+    mongoose.connect(dbURL);
     mongoose.connection
         .once('open', () => {
             console.log('Mongodb connection opened.')
