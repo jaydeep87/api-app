@@ -50,10 +50,10 @@ module.exports = {
           if (isMatch && !err) {
             // if user is found and password is right create a token
             const token = jwt.sign(user.toJSON(), config.secret, {
-              expiresIn: config.expiresIn, // 1 week
+              expiresIn: config.expiresIn, 
             });
             // return the information including token as JSON
-            res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: 'JWT ' + token });
+            res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token });
           } else {
             res.status(401)
               .send({ sc: 401, sm: 'Authentication failed. Wrong password!', mt: 'Authentication failed!' });
