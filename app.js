@@ -17,7 +17,7 @@ dotenv.config();
 mongoose.Promise = global.Promise;
 const apiRoutes = require('./routes');
 require('./models');
-
+console.log(config.database);
 dbConnection(config.database, status => logger.info(status));
 
 if (!fs.existsSync('logs')) {
