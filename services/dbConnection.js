@@ -10,6 +10,7 @@ module.exports = function (dbURL, done) {
         })
         .on('error', (error) => {
             console.log('Mongodb Connection Error Occured.')
+            console.log('Mongodb Connection Error Occured.', error)
             done('error' + error);
         })
         .on('disconnected', function () {
