@@ -53,7 +53,7 @@ module.exports = {
               expiresIn: config.expiresIn, 
             });
             // return the information including token as JSON
-            res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token });
+            res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token, user:user.toJSON() });
           } else {
             res.status(401)
               .send({ sc: 401, sm: 'Authentication failed. Wrong password!', mt: 'Authentication failed!' });
