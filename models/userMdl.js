@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   accountCreatedBy: { type: String, default: 'admin' },
-  isActive: { type: Boolean, default: true },
+  isActive: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

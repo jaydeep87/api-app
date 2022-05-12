@@ -7,7 +7,7 @@ const config = require('../config/database');
 module.exports = {
   users: (req, res, next) => {
     try {
-      mongoose.model(collConfig.user.name).find({}).then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
+      mongoose.model(collConfig.user.name).find({}).limit(5).sort({_id:-1}).then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
           .catch((err) => {
             next(err);
           });
@@ -46,19 +46,24 @@ module.exports = {
         res.status(401).send({ sc: 401, sm: 'Authentication failed. User not found.', mt: 'Authentication Failed!' });
       } else {
         // check if password matches
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (isMatch && !err) {
-            // if user is found and password is right create a token
-            const token = jwt.sign(user.toJSON(), config.secret, {
-              expiresIn: config.expiresIn, 
-            });
-            // return the information including token as JSON
-            res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token, user:user.toJSON() });
-          } else {
-            res.status(401)
-              .send({ sc: 401, sm: 'Authentication failed. Wrong password!', mt: 'Authentication failed!' });
-          }
-        });
+        if(user.isActive){
+          user.comparePassword(req.body.password, function (err, isMatch) {
+            if (isMatch && !err) {
+              // if user is found and password is right create a token
+              const token = jwt.sign(user.toJSON(), config.secret, {
+                expiresIn: config.expiresIn, 
+              });
+              // return the information including token as JSON
+              res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token, user:user.toJSON() });
+            } else {
+              res.status(401)
+                .send({ sc: 401, sm: 'Authentication failed. Wrong password!', mt: 'Authentication failed!' });
+            }
+          });
+        }else {
+          res.status(401)
+          .send({ sc: 401, sm: 'Authentication failed. Please contact to Admin!', mt: 'Authentication failed!' });
+        }        
       }
     });
   },
