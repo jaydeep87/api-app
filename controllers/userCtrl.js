@@ -7,10 +7,16 @@ const config = require('../config/database');
 module.exports = {
   users: (req, res, next) => {
     try {
-      mongoose.model(collConfig.user.name).find({}).limit(5).sort({_id:-1}).then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
-          .catch((err) => {
-            next(err);
-          });
+      const queryObj = req.query;
+      let searchQuery = {};
+      if (queryObj.searchKeyWord) {
+        searchQuery = { "name": new RegExp(queryObj.searchKeyWord, "i") }
+      }
+      mongoose.model(collConfig.user.name).find(searchQuery).limit(5).sort({ _id: -1 })
+        .then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
+        .catch((err) => {
+          next(err);
+        });
     } catch (err) {
       next(err);
     }
@@ -27,8 +33,28 @@ module.exports = {
           password: req.body.password,
           name: req.body.name,
         };
-        // save the user
-        mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ sc: 200, data, mt: 'Registration', sm: 'Registration was success!' }))
+
+        let searchQuery = {
+          name: req.body.name,
+          email: req.body.email
+        };
+        mongoose.model(collConfig.user.name).findOne(searchQuery)
+          .then(userData => {
+            if (userData) {
+              res.status(500).send({ sc: 500, sm: 'Hey! You are registered user.', mt: 'Authentication Failed!' });
+            } else {
+              // save the user
+              mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ sc: 200, data, mt: 'Registration', sm: 'Registration was success, Please contact to Admin for further Action!' }))
+                .catch((err) => {
+                  // next(err);
+                  return res.status(500).json({
+                    sc: 500,
+                    mt: 'Error!',
+                    sm: 'Found invalid request!'
+                  });
+                });
+            }
+          })
           .catch((err) => {
             next(err);
           });
@@ -46,25 +72,61 @@ module.exports = {
         res.status(401).send({ sc: 401, sm: 'Authentication failed. User not found.', mt: 'Authentication Failed!' });
       } else {
         // check if password matches
-        if(user.isActive){
+        if (user.isActive) {
           user.comparePassword(req.body.password, function (err, isMatch) {
             if (isMatch && !err) {
               // if user is found and password is right create a token
               const token = jwt.sign(user.toJSON(), config.secret, {
-                expiresIn: config.expiresIn, 
+                expiresIn: config.expiresIn,
               });
               // return the information including token as JSON
-              res.json({ sc:200, sm: 'Login success!', mt:'Logged in!', token: token, user:user.toJSON() });
+              res.json({ sc: 200, sm: 'Login success!', mt: 'Logged in!', token: token, user: user.toJSON() });
             } else {
               res.status(401)
                 .send({ sc: 401, sm: 'Authentication failed. Wrong password!', mt: 'Authentication failed!' });
             }
           });
-        }else {
+        } else {
           res.status(401)
-          .send({ sc: 401, sm: 'Authentication failed. Please contact to Admin!', mt: 'Authentication failed!' });
-        }        
+            .send({ sc: 401, sm: 'Authentication failed. Please contact to Admin!', mt: 'Authentication failed!' });
+        }
       }
     });
   },
+  activateUser: (req, res, next) => {
+    try {
+      const userId = req.params['id'];
+      if (userId) {
+        let updateObj = { isActive: true };
+        mongoose.model(collConfig.user.name).findByIdAndUpdate(userId, updateObj)
+          .then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
+          .catch((err) => {
+            next(err);
+          });
+      } else {
+        res.status(500).send({ sc: 500, sm: 'User Id not found!', mt: 'Error!' });
+      }
+
+
+    } catch (err) {
+      next(err);
+    }
+  },
+  inActivateUser: (req, res, next) => {
+    try {
+      const userId = req.params['id'];
+      if (userId) {
+        let updateObj = { isActive: false };
+        mongoose.model(collConfig.user.name).findByIdAndUpdate(userId, updateObj)
+          .then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
+          .catch((err) => {
+            next(err);
+          });
+      } else {
+        res.status(500).send({ sc: 500, sm: 'User Id not found!', mt: 'Error!' });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
 };

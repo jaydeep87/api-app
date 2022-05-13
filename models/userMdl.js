@@ -15,7 +15,7 @@ const UserSchema = new Schema({
   pin: { type: String, trim: true, default: '' },
   profileImage: { type: String, trim: true, default: '' },
   country: { type: String, default: 'India' },
-  email: { type: String, default: '' },
+  email:  { type: String, required: true },
   mobile: { type: String, required: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
@@ -53,5 +53,7 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     cb(null, isMatch);
   });
 };
+
+UserSchema.index({ name: 1, email: 1 }, { unique: true })
 
 module.exports = mongoose.model(collConfig.user.name, UserSchema, collConfig.user.name);
