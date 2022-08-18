@@ -65,6 +65,59 @@ module.exports = {
       next(err);
     }
   },
+  uploadImage: (req, res, next) => {
+    try {
+      if (req.file == undefined) {
+        return res.status(400).send("Please upload an excel file!");
+      }
+      let path = filePath.uploadFilePath + req.file.filename;
+      console.log(path);
+      req.xlsxWriter = new XLSXWriteStream();
+
+      req.xlsxWriter.setInputStream(
+        // stream of input file
+        path.stream
+          // convert excel to object stream
+          .pipe(excel())
+          //process object stream and return formated object for xlsxWriter
+          .pipe(getTransformObject())
+      );
+
+      // readXlsxFile(path).then((rows) => {
+      //     // skip header
+      //     rows.shift();
+
+      //     let courses = [];
+      //     let counter = 0;
+      //     rows.forEach((row) => {
+      //     //   let course = {
+      //     //     name: row[0],
+      //     //     description: row[1],
+      //     //     courseURL: row[2],
+      //     //     coursePeriod: row[3],
+      //     //   };
+      //       console.log(`${counter++} ::   ${row[0]}`)
+      //     //   courses.push(course);
+      //     });
+
+      //     // mongoose.model(collConfig.course.name).insertMany(courses).then(data => {
+      //     //     return res.json({
+      //     //         // data: data,
+      //     //         statusCode: 200,
+      //     //         statusMessage: 'Success!'
+      //     //     })
+      //     // }).catch(err => next(err));
+
+      // }).catch(error => {
+      //   console.log(error);
+      //   res.status(500).send({
+      //     message: "Could not upload the file: " + req.file.originalname,
+      //   });
+      // })
+    } catch (err) {
+      next(err);
+    }
+  },
   uploadXLSXNew: (req, res, next) => {
     try {
       let exceltojson;

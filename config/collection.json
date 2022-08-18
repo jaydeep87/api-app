@@ -2,6 +2,9 @@
     "user": {
         "name": "users"
     },
+    "student": {
+        "name": "students"
+    },
     "course":{
         "name": "courses"
     }
