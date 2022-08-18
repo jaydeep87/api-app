@@ -16,6 +16,12 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({storage: storage});
+
+router.use((req, res, next) => {
+  logger.info('Requested URL ',`${req.protocol}://${req.hostname}${req.originalUrl} at ${new Date()}`)
+  next()
+})
+
 router.get('/',
   (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => studentCtrl.students(req, res, next));

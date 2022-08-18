@@ -27,6 +27,7 @@ const StudentSchema = new Schema({
     "name": "",
     "reasonForLeaving": "",
     "completedClass": "",
+    "passingYear": "",
     "address": "",
     "city": "",
     "district": "",

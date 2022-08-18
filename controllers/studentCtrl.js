@@ -10,7 +10,6 @@ const util = require('../helpers/util');
 module.exports = {
   students: (req, res, next) => {
     try {
-      console.log('test auto deploy')
       const queryObj = req.query;
       let searchQuery = {};
       let skip = 0;
