@@ -17,6 +17,9 @@ dotenv.config();
 mongoose.Promise = global.Promise;
 const apiRoutes = require('./routes');
 require('./models');
+if(process.ENV == 'dev'){
+config.database = 'mongodb://localhost:27017/devdb';
+}
 console.log(config.database);
 dbConnection(config.database, status => logger.info(status));
 
