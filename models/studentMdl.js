@@ -36,6 +36,7 @@ const StudentSchema = new Schema({
     "country": "India",
     "contactNo": ""
   }},
+  registrationDate: {type: Date, default: Date.now},
   classes:{type:mongoose.Schema.Types.Mixed, default:[]},
   currentClass:{type: String,default: '' }
 });

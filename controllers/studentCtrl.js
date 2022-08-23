@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const config = require('../config/database');
 const jsonSchema = require('../config/schema');
 const JSONValidatorService = require('../services/jsonValidatorService');
 const util = require('../helpers/util');
@@ -105,7 +103,8 @@ module.exports = {
                   sc: 500,
                   mt: 'Error!',
                   sm: 'Found invalid request!',
-                  err: err
+                  err: err,
+                  schema: jsonSchema.student.addUpdate
                 });
               });
           } else {
@@ -117,7 +116,8 @@ module.exports = {
                   sc: 500,
                   mt: 'Error!',
                   sm: 'Found invalid request!',
-                  err: err
+                  err: err,
+                  schema: jsonSchema.student.addUpdate
                 });
               });
           }
