@@ -35,8 +35,9 @@ module.exports = {
         };
 
         let searchQuery = {
-          name: req.body.name,
-          email: req.body.email
+          // name: req.body.name,
+          email: req.body.email,
+          mobile: req.body.mobile
         };
         mongoose.model(collConfig.user.name).findOne(searchQuery)
           .then(userData => {

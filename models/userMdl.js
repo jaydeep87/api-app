@@ -19,6 +19,8 @@ const UserSchema = new Schema({
   mobile: { type: String, required: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
+  userType: { type: String, required: true, default:'guest' },
+  uid: { type: String, required: true },
   accountCreatedBy: { type: String, default: 'admin' },
   isActive: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

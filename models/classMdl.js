@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const ClassSchema = new Schema({
   name: { type: String, required: true, trim: true },
-  section: { type: String,  trim: true, default: '' },
   classTeacher: { type: String, trim: true,  default: ''},
   voiceClassTeacher: { type: String, trim: true,  default: '' },
   minStudent: { type: Number, default: 0 },

@@ -8,6 +8,7 @@ module.exports = {
         "lName": {"type": "string", "minLength": 2, "maxLength": 30},
         "mobile": {"type": "string", "minLength": 10, "maxLength": 10},
         "email": {"type": "string", "minLength": 5, "maxLength": 35},
+        "uid": {"type": "string", "minLength": 3, "maxLength": 5},
         "password": {"type": "string", "minLength": 5, "maxLength": 30},
         "confirmPassword": {"type": "string", "minLength": 5, "maxLength": 30}
       },
@@ -187,13 +188,39 @@ module.exports = {
       "required": ["name", "fatherName", "motherName", "gender"]
     }
   },
+  "teacher": {
+    "addUpdate": {
+      "type": "object",
+      "properties": {
+        "_id": {"type": "string"},
+        "name": {"type": "string", "minLength": 3, "maxLength": 50},
+        "nickName": {"type": "string", "minLength": 2, "maxLength": 50},
+        "dob": {"type": "string", "minLength": 10, "maxLength": 10},
+        "gender": {"type": "string"},
+        "fatherName": {"type": "string", "minLength": 2, "maxLength": 50},
+        "motherName": {"type": "string", "minLength": 2, "maxLength": 50},
+        // "mName": {"type": "string", "minLength": 2, "maxLength": 30},
+        // "lName": {"type": "string", "minLength": 2, "maxLength": 30},
+        "mobile": {"type": "string", "minLength": 10, "maxLength": 10},
+        "altMobile": {"type": "string", "minLength": 10, "maxLength": 10},
+        "email": {"type": "string", "minLength": 5, "maxLength": 35},
+        "address": {"type": "string", "minLength": 7, "maxLength": 50},
+        "city": {"type": "string", "minLength": 2, "maxLength": 50},
+        "district": {"type": "string", "minLength": 2, "maxLength": 50},
+        "state": {"type": "string", "minLength": 2, "maxLength": 50},
+        "postalCode": {"type": "string", "minLength": 6, "maxLength": 10},
+        "profileImage": {"type": "string"},
+        "country": {"type": "string", "minLength": 2, "maxLength": 50}
+      },
+      "required": ["name", "fatherName", "gender"]
+    }
+  },
   "class": {
     "addUpdate": {
       "type": "object",
       "properties": {
         "_id": {"type": "string"},
-        "name": {"type": "string", "minLength": 2, "maxLength": 50},
-        "section": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "name": {"type": "string", "minLength": 2, "maxLength": 100},
         "classTeacher": { "type": "string", "minLength": 2, "maxLength": 50},
         "voiceClassTeacher": { "type": "string", "minLength": 2, "maxLength": 50 },
         "minStudent": { "type": "number"},

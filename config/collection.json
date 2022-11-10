@@ -5,6 +5,9 @@
     "student": {
         "name": "students"
     },
+    "teacher": {
+        "name": "teachers"
+    },
     "course":{
         "name": "courses"
     },
