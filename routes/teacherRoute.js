@@ -25,6 +25,9 @@ router.use((req, res, next) => {
 router.get('/',
   (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => teacherCtrl.teachers(req, res, next));
+router.get('/master',
+  // (req, res, next) => authService.auth(req, res, next),
+  (req, res, next) => teacherCtrl.teachersMaster(req, res, next));
 router.put('/activate/:id',
   (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => teacherCtrl.activateTeacher(req, res, next));

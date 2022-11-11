@@ -221,8 +221,8 @@ module.exports = {
       "properties": {
         "_id": {"type": "string"},
         "name": {"type": "string", "minLength": 2, "maxLength": 100},
-        "classTeacher": { "type": "string", "minLength": 2, "maxLength": 50},
-        "voiceClassTeacher": { "type": "string", "minLength": 2, "maxLength": 50 },
+        "classTeacher": { "type": "object"},
+        "voiceClassTeacher": { "type": "object" },
         "minStudent": { "type": "number"},
         "maxStudent": { "type": "number"}
       },

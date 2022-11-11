@@ -10,7 +10,10 @@ module.exports = {
       const queryObj = req.query;
       let searchQuery = {};
       if (queryObj.searchKeyWord) {
-        searchQuery = { "name": new RegExp(queryObj.searchKeyWord, "i") }
+        // searchQuery = { "name": new RegExp(queryObj.searchKeyWord, "i") }
+        searchQuery = {          
+          $or: [{name: new RegExp(queryObj.searchKeyWord, "i")}, {uid: new RegExp(queryObj.searchKeyWord, "i")}]
+         }
       }
       mongoose.model(collConfig.user.name).find(searchQuery).limit(5).sort({ _id: -1 })
         .then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))

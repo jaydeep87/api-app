@@ -6,12 +6,25 @@
         "name": "students"
     },
     "teacher": {
-        "name": "teachers"
+        "name": "teachers",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "uid":1,
+            "mobile":1,
+            "email":1
+        },
+        "dataProject":{}
     },
     "course":{
         "name": "courses"
     },
     "class":{
-        "name": "classes"
+        "name": "classes",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
     }
 }

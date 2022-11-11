@@ -17,9 +17,9 @@ module.exports = {
       }
       if (queryObj.searchKeyWord) {
         // searchQuery = { "name": new RegExp(queryObj.searchKeyWord, "i") }
-        searchQuery = {          
-          $or: [{name: new RegExp(queryObj.searchKeyWord, "i")}, {uid: new RegExp(queryObj.searchKeyWord, "i")}]
-         }
+        searchQuery = {
+          $or: [{ name: new RegExp(queryObj.searchKeyWord, "i") }, { uid: new RegExp(queryObj.searchKeyWord, "i") }]
+        }
       }
       mongoose.model(collConfig.teacher.name)
         .aggregate([
@@ -27,7 +27,7 @@ module.exports = {
             "$facet": {
               "data": [
                 { "$match": searchQuery },
-                { "$sort": { _id: -1 } },
+                { "$sort": { name: 1 } },
                 { "$skip": skip },
                 { "$limit": limit },
               ],
@@ -47,6 +47,22 @@ module.exports = {
             totalCount = resultData[0]['totalCount'].length ? resultData[0]['totalCount'][0]['count'] : 0;
           }
           return res.json({ sc: 200, data, totalCount, mt: 'Success', sm: 'Success!' })
+        }
+        )
+        .catch((err) => {
+          next(err);
+        });
+    } catch (err) {
+      next(err);
+    }
+  },
+  teachersMaster: (req, res, next) => {
+    try {
+      let searchQuery = { "isActive": true };
+      mongoose.model(collConfig.teacher.name)
+        .find(searchQuery, collConfig.teacher.masterProject).sort({ name: 1 })
+        .then(data => {
+          return res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' })
         }
         )
         .catch((err) => {
@@ -190,8 +206,8 @@ module.exports = {
                 } else {
                   // save the user
                   mongoose.model(collConfig.user.name).create(userObj)
-                  .then(data => ucb(null, data))
-                  .catch((err) => {
+                    .then(data => ucb(null, data))
+                    .catch((err) => {
                       ucb(err, null)
                     });
                 }
@@ -207,20 +223,20 @@ module.exports = {
               mobile: teacherObj.mobile
             };
             mongoose.model(collConfig.teacher.name).findOne(searchQuery)
-            .then(teacherData => {
-              if (teacherData) {
-                tcb('Hey! You are registered user.', null);
-              } else {
-                // save the user
-                mongoose.model(collConfig.teacher.name).create(teacherObj)
-                .then(data => tcb(null, data))
-                .catch((err) => {
-                    tcb(err, null)
-                  });
-              }
-            }).catch((err) => {
-              tcb(err, null);
-            });
+              .then(teacherData => {
+                if (teacherData) {
+                  tcb('Hey! You are registered user.', null);
+                } else {
+                  // save the user
+                  mongoose.model(collConfig.teacher.name).create(teacherObj)
+                    .then(data => tcb(null, data))
+                    .catch((err) => {
+                      tcb(err, null)
+                    });
+                }
+              }).catch((err) => {
+                tcb(err, null);
+              });
           }
         }, function (err, results) {
           if (err) {
