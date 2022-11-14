@@ -38,15 +38,56 @@ module.exports = {
         ])
         // find(searchQuery).limit(limit).skip(skip).sort({ _id: -1 })
         .then(resultData => {
-          let data =[];
+          let data = [];
           let totalCount = 0;
-          if(resultData && resultData.length){
+          if (resultData && resultData.length) {
             data = resultData[0]['data'];
             totalCount = resultData[0]['totalCount'].length ? resultData[0]['totalCount'][0]['count'] : 0;
           }
           return res.json({ sc: 200, data, totalCount, mt: 'Success', sm: 'Success!' })
         }
         )
+        .catch((err) => {
+          next(err);
+        });
+    } catch (err) {
+      next(err);
+    }
+  },
+  studentsMaster: (req, res, next) => {
+    try {
+      const queryObj = req.query;
+      let searchQuery = { "isActive": true };
+      if (queryObj.searchKeyWord) {
+        searchQuery.name = new RegExp(queryObj.searchKeyWord, "i");
+      }
+      mongoose.model(collConfig.student.name)
+        .find(searchQuery, collConfig.student.masterProject).sort({ name: 1 })
+        .then(data => {
+          return res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' })
+        })
+        .catch((err) => {
+          next(err);
+        });
+    } catch (err) {
+      next(err);
+    }
+  },
+  studentsByClass: (req, res, next) => {
+    try {
+      const queryObj = req.query;
+      let searchQuery = {"isActive": true};
+      if (queryObj.classId) {
+        searchQuery = {
+          "currentClass._id": queryObj.classId,
+          "isActive": true
+        }
+      }
+      mongoose.model(collConfig.student.name)
+        .find(searchQuery, collConfig.student.masterProject).sort({ name: 1 })
+        .then(data => {
+          return res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' })
+        })
         .catch((err) => {
           next(err);
         });

@@ -3,10 +3,33 @@
         "name": "users"
     },
     "student": {
-        "name": "students"
+        "name": "students",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "fatherName":1,
+            "mobile":1,
+            "dob":1,
+            "currentClass":1,
+            "classes":1,
+            "gender":1,
+            "profileImage":1
+        },
+        "dataProject":{}
     },
     "teacher": {
         "name": "teachers",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "uid":1,
+            "mobile":1,
+            "email":1
+        },
+        "dataProject":{}
+    },
+    "staff": {
+        "name": "staffs",
         "masterProject":{
             "_id":1,
             "name":1,

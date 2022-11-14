@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const studentCtrl = require('../controllers/studentCtrl');
+const staffCtrl = require('../controllers/staffCtrl');
 const authService = require('../services/authService');
 const multer = require('multer');
 const uuidv1 = require('uuid');
@@ -24,27 +24,25 @@ router.use((req, res, next) => {
 
 router.get('/',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.students(req, res, next));
-  router.get('/master',
+  (req, res, next) => staffCtrl.staffs(req, res, next));
+router.get('/master',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.studentsMaster(req, res, next));
-  router.get('/by-class',
-  // (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.studentsByClass(req, res, next));
+  (req, res, next) => staffCtrl.staffsMaster(req, res, next));
 router.put('/activate/:id',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.activateStudent(req, res, next));
+  (req, res, next) => staffCtrl.activateStaff(req, res, next));
 router.put('/in-activate/:id',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.inActivateStudent(req, res, next));
+  (req, res, next) => staffCtrl.inActivateStaff(req, res, next));
 
 router.post('/add-update',
-  (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.addUpdate(req, res, next));
+  // (req, res, next) => authService.auth(req, res, next),
+  (req, res, next) => staffCtrl.validateStaffRequest(req, res, next),
+  (req, res, next) => staffCtrl.addUpdate(req, res, next));
 
 router.post('/upload-photo',
 upload.single('profile_image'),
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => studentCtrl.updateProfileImage(req, res, next));
+  (req, res, next) => staffCtrl.updateProfileImage(req, res, next));
 
 module.exports = router;

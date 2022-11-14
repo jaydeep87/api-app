@@ -37,7 +37,13 @@ const StudentSchema = new Schema({
   }},
   registrationDate: {type: Date, default: Date.now},
   classes:{type:mongoose.Schema.Types.Mixed, default:[]},
-  currentClass:{type: String,default: '' }
+  currentClass:{type: mongoose.Schema.Types.Mixed, default:{ 
+  "_id": "",
+  "name": "",
+  "classTeacher": "",
+  "voiceClassTeacher": "",
+  "maxStudent": 0,
+  "minStudent": 0}}
 });
 
 // StudentSchema.index({ name: 1, dob: 1 }, { unique: true })
