@@ -29,7 +29,7 @@ router.get('/',
   (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => studentCtrl.studentsMaster(req, res, next));
   router.get('/by-class',
-  // (req, res, next) => authService.auth(req, res, next),
+  (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => studentCtrl.studentsByClass(req, res, next));
 router.put('/activate/:id',
   (req, res, next) => authService.auth(req, res, next),

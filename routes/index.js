@@ -5,6 +5,7 @@ const masterRoute = require('./masterRoute');
 const studentRoute = require('./studentRoute');
 const teacherRoute = require('./teacherRoute');
 const staffRoute = require('./staffRoute');
+const attendanceRoute = require('./attendanceRoute');
 const xlsxUploadRoute = require('./xlsxUploadRoute');
 
 routes.use('/', indexRoute);
@@ -12,6 +13,7 @@ routes.use('/api/users', userRoute);
 routes.use('/api/students', studentRoute);
 routes.use('/api/teachers', teacherRoute);
 routes.use('/api/staffs', staffRoute);
+routes.use('/api/attendances', attendanceRoute);
 routes.use('/api/masters', masterRoute);
 routes.use('/api/upload', xlsxUploadRoute);
 

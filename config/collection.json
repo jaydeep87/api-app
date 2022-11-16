@@ -17,6 +17,10 @@
         },
         "dataProject":{}
     },
+    "attendance": {
+        "name": "attendances",
+        "dataProject":{}
+    },
     "teacher": {
         "name": "teachers",
         "masterProject":{

@@ -215,6 +215,29 @@ module.exports = {
       "required": ["name", "fatherName", "gender"]
     }
   },
+  "attendance": {
+    "addUpdate": {
+      "type": "object",
+      "properties": {
+        "_id": {"type": "string"},
+        "date": {"type": "string"},
+        "class":{"type": "object"},
+        "classTeacher":{"type": "object"},
+        "presentsStudnet":{"type": "array",
+        "items": [{
+          "type": "object",
+          "properties": {
+            "_id": {"type": "string"},
+            "name": {"type": "string"},
+            "isPresent": {"type": "number"},
+            "presentType": {"type": "number"}
+          },
+          "required": ["name", "isPresent"]
+        }]},
+      },
+      "required": []
+    }
+  },
   "staff": {
     "addUpdate": {
       "type": "object",
