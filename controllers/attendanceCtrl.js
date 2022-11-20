@@ -63,14 +63,43 @@ module.exports = {
           "class._id": queryObj.classId
         }
       }
+      let skip = 0;
+      let limit = 31
+      if (queryObj.page && queryObj.size) {
+        skip = parseInt(queryObj.page * queryObj.size);
+        limit = parseInt(queryObj.size);
+      }
       mongoose.model(collConfig.attendance.name)
-        .find(searchQuery, collConfig.attendance.masterProject).sort({ name: 1 })
-        .then(data => {
-          return res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' })
-        })
-        .catch((err) => {
-          next(err);
-        });
+      .aggregate([
+        {
+          "$facet": {
+            "data": [
+              { "$match": searchQuery },
+              { "$sort": { _id: -1, date: -1 } },
+              { "$skip": skip },
+              { "$limit": limit },
+            ],
+            "totalCount": [
+              { "$match": searchQuery },
+              { "$count": "count" }
+            ]
+          }
+        }
+      ])
+      // find(searchQuery).limit(limit).skip(skip).sort({ _id: -1 })
+      .then(resultData => {
+        let data = [];
+        let totalCount = 0;
+        if (resultData && resultData.length) {
+          data = resultData[0]['data'];
+          totalCount = resultData[0]['totalCount'].length ? resultData[0]['totalCount'][0]['count'] : 0;
+        }
+        return res.json({ sc: 200, data, totalCount, mt: 'Success', sm: 'Success!' })
+      }
+      )
+      .catch((err) => {
+        next(err);
+      });
     } catch (err) {
       next(err);
     }

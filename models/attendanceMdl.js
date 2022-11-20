@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const AttendanceSchema = new Schema({
   date: { type: Date, default: Date.now },
+  dateString: { type: String, default: '' },
   class: { type: mongoose.Schema.Types.Mixed, default: {}},
   classTeacher: { type: mongoose.Schema.Types.Mixed, default: {}},
   presentsStudent: { type: mongoose.Schema.Types.Mixed, default: [{}] },

@@ -9,17 +9,10 @@ router.use((req, res, next) => {
 
 router.get('/',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => attendanceCtrl.students(req, res, next));
+  (req, res, next) => attendanceCtrl.attendances(req, res, next));
   router.get('/by-class',
   (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => attendanceCtrl.studentsByClass(req, res, next));
-router.put('/activate/:id',
-  (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => attendanceCtrl.activateStudent(req, res, next));
-router.put('/in-activate/:id',
-  (req, res, next) => authService.auth(req, res, next),
-  (req, res, next) => attendanceCtrl.inActivateStudent(req, res, next));
-
+  (req, res, next) => attendanceCtrl.attendancesByClass(req, res, next));
 router.post('/add-update',
   (req, res, next) => authService.auth(req, res, next),
   (req, res, next) => attendanceCtrl.addUpdate(req, res, next));
