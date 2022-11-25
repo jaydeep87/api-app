@@ -5,6 +5,8 @@ const Teacher = require('./teacherMdl');
 const Staff = require('./staffMdl');
 const Class = require('./classMdl');
 const Attendance = require('./attendanceMdl');
+const MainMaster = require('./mainMasterMdl');
+const MasterType = require('./masterTypeMdl');
 module.exports = {
     User,
     Course,
@@ -12,5 +14,7 @@ module.exports = {
     Teacher,
     Staff,
     Class,
-    Attendance
+    Attendance,
+    MainMaster,
+    MasterType
 };

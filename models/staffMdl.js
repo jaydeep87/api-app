@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const StaffSchema = new Schema({
   name: { type: String, required: true, trim: true },
   nickName: { type: String,  trim: true, default: '' },
+  profession: { type: String,  trim: true, default: '' },
   uid: { type: String,  required:true, trim: true, unique:true },
   dob: { type: String, required: true, trim: true,  default: ''},
   gender: { type: String, trim: true, default: '' },

@@ -53,5 +53,37 @@
             "name":1
         },
         "dataProject":{}
+    },
+    "vehicle":{
+        "name": "vehicles",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "role":{
+        "name": "roles",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "master":{
+        "name": "masters",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "masterType":{
+        "name": "masterTypes",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
     }
 }

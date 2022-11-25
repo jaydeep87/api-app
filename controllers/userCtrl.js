@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const async = require('async');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
+const util = require('../helpers/util');
 // load up the user model
 // const User = require('../models/userMdl');
 
@@ -11,9 +13,9 @@ module.exports = {
       let searchQuery = {};
       if (queryObj.searchKeyWord) {
         // searchQuery = { "name": new RegExp(queryObj.searchKeyWord, "i") }
-        searchQuery = {          
-          $or: [{name: new RegExp(queryObj.searchKeyWord, "i")}, {uid: new RegExp(queryObj.searchKeyWord, "i")}]
-         }
+        searchQuery = {
+          $or: [{ name: new RegExp(queryObj.searchKeyWord, "i") }, { uid: new RegExp(queryObj.searchKeyWord, "i") }]
+        }
       }
       mongoose.model(collConfig.user.name).find(searchQuery).limit(5).sort({ _id: -1 })
         .then(data => res.json({ sc: 200, data, mt: 'Success', sm: 'Success!' }))
@@ -47,16 +49,59 @@ module.exports = {
             if (userData) {
               res.status(500).send({ sc: 500, sm: 'Hey! You are registered user.', mt: 'Authentication Failed!' });
             } else {
-              // save the user
-              mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ sc: 200, data, mt: 'Registration', sm: 'Registration was success, Please contact to Admin for further Action!' }))
-                .catch((err) => {
-                  // next(err);
-                  return res.status(500).json({
-                    sc: 500,
-                    mt: 'Error!',
-                    sm: 'Found invalid request!'
-                  });
+              const possibleInitials = util.get3CharInitials(userObj.name);
+              if (possibleInitials.length) {
+                let allowedInitial = "";
+                async.forEachSeries(possibleInitials, function (initial, cb) {
+                  if (!allowedInitial) {
+                    mongoose.model(collConfig.user.name).find({ uid: initial })
+                      .then(data => {
+                        if (data && data.length) {
+                          cb();
+                        } else {
+                          allowedInitial = initial;
+                          cb();
+                        }
+                      })
+                      .catch((err) => {
+                        cb();
+                      });
+                  } else {
+                    cb();
+                  }
+                }, function (err) {
+                  if (err) {
+                    next(err);
+                  } else {
+                    if (allowedInitial) {
+                      userObj.uid = allowedInitial;
+                      // save the user
+                      mongoose.model(collConfig.user.name).create(userObj).then(data => res.json({ sc: 200, data, mt: 'Registration', sm: 'Registration was success, Please contact to Admin for further Action!' }))
+                        .catch((err) => {
+                          // next(err);
+                          return res.status(500).json({
+                            sc: 500,
+                            mt: 'Error!',
+                            sm: 'Found invalid request!'
+                          });
+                        });
+                      // next();
+                    } else {
+                      return res.status(500).json({
+                        sc: 500,
+                        mt: 'Error!',
+                        sm: 'uid could not be created, please add some more suffix or prefix in name.'
+                      });
+                    }
+                  }
                 });
+              } else {
+                return res.status(500).json({
+                  sc: 500,
+                  mt: 'Error!',
+                  sm: 'uid could not be created, please add some more suffix or prefix in name.'
+                });
+              }
             }
           })
           .catch((err) => {
@@ -110,8 +155,6 @@ module.exports = {
       } else {
         res.status(500).send({ sc: 500, sm: 'User Id not found!', mt: 'Error!' });
       }
-
-
     } catch (err) {
       next(err);
     }
