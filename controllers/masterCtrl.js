@@ -169,25 +169,25 @@ module.exports = {
                   mongoose.model(collConfig.masterType.name).findByIdAndUpdate(masterTypeObj["_id"], masterTypeObj, { new: true })
                     .then(result => res.json({ sc: 200, mt: 'Updated', data: result, sm: 'Master type record updated!' }))
                     .catch((err) => {
-                      // next(err);
-                      return res.status(500).json({
-                        sc: 500,
-                        mt: 'Error!',
-                        sm: 'Found invalid request!',
-                        err: err
-                      });
+                      next(err);
+                      // return res.status(500).json({
+                      //   sc: 500,
+                      //   mt: 'Error!',
+                      //   sm: 'Found invalid request!',
+                      //   err: err
+                      // });
                     });
                 } else {
                   mongoose.model(collConfig.masterType.name).create(masterTypeObj)
                     .then(result => res.json({ sc: 200, mt: 'Created', data: result, sm: 'Master type record created!' }))
                     .catch((err) => {
-                      // next(err);
-                      return res.status(500).json({
-                        sc: 500,
-                        mt: 'Error!',
-                        sm: 'Found invalid request!',
-                        err: err
-                      });
+                      next(err);
+                      // return res.status(500).json({
+                      //   sc: 500,
+                      //   mt: 'Error!',
+                      //   sm: 'Found invalid request!',
+                      //   err: err
+                      // });
                     });
                 }
               } else {

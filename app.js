@@ -17,8 +17,8 @@ dotenv.config();
 mongoose.Promise = global.Promise;
 const apiRoutes = require('./routes');
 require('./models');
-if(process.env.ENV == 'dev'){
-config.database = 'mongodb://localhost:27017/devdb';
+if (process.env.ENV == 'dev') {
+  config.database = 'mongodb://localhost:27017/devdb';
 }
 console.log(config.database);
 dbConnection(config.database, status => logger.info(status));
@@ -30,14 +30,30 @@ if (!fs.existsSync('logs')) {
 const errorHandler = (err, req, res, next) => {
   logger.error('error', err);
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.json({
-    sc: err.status || 500,
-    sm: err.message,
-    msgTitle: 'Error!'
-  })
+  const logData = {
+    reqPayload: req.body,
+    err: err.stack ? err.stack : err.message,
+    apiPath: `${req.protocol}://${req.hostname}${req.originalUrl}`,
+    user: "",
+    logType: "error"
+  }
+  mongoose.model(collConfig.logs.name).create(logData).then(data => {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.json({
+      sc: err.status || 500,
+      sm: err.message,
+      msgTitle: 'Error!'
+    })
+  }).catch(err => {
+    res.status(err.status || 500);
+    res.json({
+      sc: err.status || 500,
+      sm: err.message,
+      msgTitle: 'Error!'
+    })
+  });
 }
 
 const notFound404 = (req, res, next) => {

@@ -85,5 +85,9 @@
             "name":1
         },
         "dataProject":{}
+    },
+    "logs":{
+        "name": "logs",
+        "dataProject":{}
     }
 }
