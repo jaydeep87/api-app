@@ -275,7 +275,7 @@ module.exports = {
         "_id": { "type": "string" },
         "name": { "type": "string", "minLength": 2, "maxLength": 100 },
         "classTeacher": { "type": "object" },
-        "voiceClassTeacher": { "type": "object" },
+        "viceClassTeacher": { "type": "object" },
         "minStudent": { "type": "number" },
         "maxStudent": { "type": "number" }
       },

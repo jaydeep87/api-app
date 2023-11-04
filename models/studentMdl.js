@@ -41,7 +41,7 @@ const StudentSchema = new Schema({
   "_id": "",
   "name": "",
   "classTeacher": "",
-  "voiceClassTeacher": "",
+  "viceClassTeacher": "",
   "maxStudent": 0,
   "minStudent": 0}}
 });

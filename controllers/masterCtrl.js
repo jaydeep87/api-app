@@ -150,7 +150,7 @@ module.exports = {
             if (queryObj.searchKeyWord) {
                 searchQuery.name = new RegExp(queryObj.searchKeyWord, "i");
             }
-            mongoose.model(collConfig.masterType.name).find(searchQuery).then(data => {
+            mongoose.model(collConfig.masterType.name).find(searchQuery).sort({name:1}).then(data => {
                 return res.json({
                     sc: 200, data, totalCount: data.length, mt: 'Success', sm: 'Success!'
                 })

@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const ClassSchema = new Schema({
   name: { type: String, required: true, trim: true },
   classTeacher: { type: mongoose.Schema.Types.Mixed, default: {}},
-  voiceClassTeacher: { type: mongoose.Schema.Types.Mixed, default: {} },
+  viceClassTeacher: { type: mongoose.Schema.Types.Mixed, default: {} },
   minStudent: { type: Number, default: 0 },
   maxStudent: { type: Number, default: 0},
   isActive: { type: Boolean, default: true },
