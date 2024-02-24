@@ -2,7 +2,88 @@
     "user": {
         "name": "users"
     },
+    "student": {
+        "name": "students",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "fatherName":1,
+            "mobile":1,
+            "dob":1,
+            "currentClass":1,
+            "classes":1,
+            "gender":1,
+            "profileImage":1
+        },
+        "dataProject":{}
+    },
+    "attendance": {
+        "name": "attendances",
+        "dataProject":{}
+    },
+    "teacher": {
+        "name": "teachers",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "uid":1,
+            "mobile":1,
+            "email":1
+        },
+        "dataProject":{}
+    },
+    "staff": {
+        "name": "staffs",
+        "masterProject":{
+            "_id":1,
+            "name":1,
+            "uid":1,
+            "mobile":1,
+            "email":1
+        },
+        "dataProject":{}
+    },
     "course":{
         "name": "courses"
+    },
+    "class":{
+        "name": "classes",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "vehicle":{
+        "name": "vehicles",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "role":{
+        "name": "roles",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "master":{
+        "name": "masters",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
+    },
+    "masterType":{
+        "name": "masterTypes",
+        "masterProject":{
+            "_id":1,
+            "name":1
+        },
+        "dataProject":{}
     }
 }

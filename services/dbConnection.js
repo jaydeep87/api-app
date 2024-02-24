@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 module.exports = function (dbURL, done) {
-    mongoose.connect(dbURL, { useNewUrlParser: true, bufferMaxEntries: 0, useUnifiedTopology: true });
+    mongoose.connect(dbURL);
     mongoose.connection
         .once('open', () => {
             console.log('Mongodb connection opened.')
@@ -10,6 +10,7 @@ module.exports = function (dbURL, done) {
         })
         .on('error', (error) => {
             console.log('Mongodb Connection Error Occured.')
+            console.log('Mongodb Connection Error Occured.', error)
             done('error' + error);
         })
         .on('disconnected', function () {

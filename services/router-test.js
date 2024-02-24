@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../app').appInit();
 const appServer = require('../bin/www').initialize();
 
-console.log('called');
+// console.log('called');
 appServer();
 /* global it, before, describe, expect */
 describe('CMS API Test.', () => {

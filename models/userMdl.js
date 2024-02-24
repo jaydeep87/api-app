@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-  fName: { type: String, required: true, trim: true },
-  mName: { type: String, trim: true, default: '' },
-  lName: { type: String, trim: true, default: '' },
+  // fName: { type: String, required: true, trim: true },
+  name: { type: String, required: true, trim: true },
+  // mName: { type: String, trim: true, default: '' },
+  // lName: { type: String, trim: true, default: '' },
   gender: { type: String, trim: true, default: '' },
   address: { type: String, trim: true, default: '' },
   city: { type: String, trim: true, default: '' },
@@ -14,12 +15,14 @@ const UserSchema = new Schema({
   pin: { type: String, trim: true, default: '' },
   profileImage: { type: String, trim: true, default: '' },
   country: { type: String, default: 'India' },
-  email: { type: String },
+  email:  { type: String, required: true },
   mobile: { type: String, required: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
+  userType: { type: String, required: true, default:'guest' },
+  uid: { type: String, required: true },
   accountCreatedBy: { type: String, default: 'admin' },
-  isActive: { type: Boolean, default: true },
+  isActive: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
@@ -52,5 +55,7 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     cb(null, isMatch);
   });
 };
+
+UserSchema.index({ name: 1, email: 1 }, { unique: true })
 
 module.exports = mongoose.model(collConfig.user.name, UserSchema, collConfig.user.name);

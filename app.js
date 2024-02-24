@@ -4,7 +4,6 @@ global.authService = require('./services/authService');
 const express = require('express');
 const path = require('path');
 // const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const fs = require('fs');
@@ -18,19 +17,41 @@ dotenv.config();
 mongoose.Promise = global.Promise;
 const apiRoutes = require('./routes');
 require('./models');
-
+if(process.env.ENV == 'dev'){
+config.database = 'mongodb://localhost:27017/devdb';
+}
+console.log(config.database);
 dbConnection(config.database, status => logger.info(status));
 
 if (!fs.existsSync('logs')) {
   fs.mkdirSync('logs'); // Create the directory if it does not exist
 }
 
+const errorHandler = (err, req, res, next) => {
+  logger.error('error', err);
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.json({
+    sc: err.status || 500,
+    sm: err.message,
+    msgTitle: 'Error!'
+  })
+}
+
+const notFound404 = (req, res, next) => {
+  const err = new Error(`'${req.protocol}://${req.headers.host + req.url}' Not Found`);
+  err.status = 404;
+  next(err);
+}
+
 function appInit() {
   const app = express();
   app.use(cors());
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   // app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(passport.initialize());
@@ -49,25 +70,12 @@ function appInit() {
   app.use('/', apiRoutes);
 
   // catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
+  app.use((req, res, next) => notFound404(req, res, next),
+    (err, req, res, next) => errorHandler(err, req, res, next));
 
   // error handler
-  app.use((err, req, res) => {
-    logger.error('error', err);
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    res.status(err.status || 500);
-    res.json({
-      statusCode: err.status || 500,
-      statusMessage: err.message,
-    });
-    // render the error page
-  });
+  app.use((err, req, res, next) => errorHandler(err, req, res, next));
+  // render the error page
   return app;
 }
 module.exports.appInit = appInit;
