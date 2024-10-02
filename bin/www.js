@@ -1,5 +1,6 @@
 const debug = require('debug')('app:server');
 const http = require('http');
+const ws = require('ws');
 const app = require('../app').appInit();
 
 /**
@@ -66,6 +67,39 @@ const server = http.createServer(app);
  * Event listener for HTTP server "listening" event.
  */
 
+const wsServer = new ws.Server({ server });
+  // Handle WebSocket connections
+  wsServer.on('connection', (ws) => {
+
+    console.log('⚡️ websocket connection established. Listening...')
+
+    ws.on('message', (message) => {
+    console.log(`📥 Incomming message: "${message.toString()}"`);
+    
+    // send message back to client
+    const replyMessage = `Reply to ${message.toString()}`;
+    console.log(`📤 Outgoing message: "${replyMessage}"`)
+    ws.send(replyMessage, false);
+    });
+
+    // Handle client disconnect
+    ws.on('close', () => {
+      console.log('WS Client connection disconnected');
+    });
+  });
+
+  app.get('/', (req, res) => {
+    const wsURL = `ws://${req.headers.host}`
+    res.send(`Connect via websocket: ${wsURL}`);
+  });
+  // register handler to upgrade initial http request to websocket connection
+  app.on('upgrade', (req, socket, head) => {
+  console.log('upgrading request to websocket connection - url:', req.url);
+
+  wsServer.handleUpgrade(req, socket, head, socket => {
+  wsServer.emit('connection', socket, req);
+  });
+  });
 const onListening = () => {
   const addr = server.address();
   const bind = typeof addr === 'string'
